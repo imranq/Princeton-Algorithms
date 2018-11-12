@@ -47,7 +47,7 @@ public class CycleTester {
     
 
 
-    public boolean hasCycle(){
+    public boolean hasCycle() {
         return cycle != null;
     }
   

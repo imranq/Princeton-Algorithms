@@ -10,11 +10,13 @@
 
 import java.util.Comparator;
 import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
+import java.lang.Math;
 
 public class Point implements Comparable<Point> {
 
-    private final int x;     // x-coordinate of this point
-    private final int y;     // y-coordinate of this point
+    public final int x;     // x-coordinate of this point
+    public final int y;     // y-coordinate of this point
 
     /**
      * Initializes a new point.
@@ -42,6 +44,11 @@ public class Point implements Comparable<Point> {
      *
      * @param that the other point
      */
+    public int distance(){
+        return this.x^2+this.y^2;
+    }
+    
+    
     public void drawTo(Point that) {
         /* DO NOT MODIFY */
         StdDraw.line(this.x, this.y, that.x, that.y);
@@ -60,7 +67,18 @@ public class Point implements Comparable<Point> {
      */
     public double slopeTo(Point that) {
         /* YOUR CODE HERE */
-        return (that.y-y)/(that.x-x)
+        if (that.x - x == 0) {
+            if (that.y - y > 0) {
+                return Double.POSITIVE_INFINITY;
+            } else {
+                return Double.NEGATIVE_INFINITY;
+            }
+            
+        } else {
+            return ((double)that.y-(double)y)/((double)that.x-(double)x);
+        }
+        
+        
     }
 
     /**
@@ -75,6 +93,10 @@ public class Point implements Comparable<Point> {
      *         point; and a positive integer if this point is greater than the
      *         argument point
      */
+    public double distanceTo(Point that) {
+        return Math.sqrt(Math.pow(that.x-x,2) + Math.pow(that.y-y,2));
+    }
+    
     public int compareTo(Point that) {
         /* YOUR CODE HERE */
         if (that.y > y) {
@@ -87,7 +109,7 @@ public class Point implements Comparable<Point> {
             } else if (that.x < x) {
                 return 1;
             } else {
-                return -1
+                return -1;
             }
         }
         return 1;
@@ -103,9 +125,9 @@ public class Point implements Comparable<Point> {
         final Point that = this;
         return new Comparator<Point>() {
             public int compare(Point o1, Point o2) {
-                return Double.compare(o1.slopeTo(that) - o2.slopeTo(that));
+                return Double.compare(o1.slopeTo(that),o2.slopeTo(that));
             }
-        }
+        };
     }
 
 
@@ -126,5 +148,9 @@ public class Point implements Comparable<Point> {
      */
     public static void main(String[] args) {
         /* YOUR CODE HERE */
+        Point a = new Point(4160, 29184);
+        Point b = new Point(5120, 5678);
+        StdOut.println(a.slopeTo(b));
+        
     }
 }
