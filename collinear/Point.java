@@ -71,7 +71,7 @@ public class Point implements Comparable<Point> {
             if (that.y - y > 0) {
                 return Double.POSITIVE_INFINITY;
             } else {
-                return Double.NEGATIVE_INFINITY;
+                return Double.POSITIVE_INFINITY; //keep it the same since a vertical line is a vertical line
             }
             
         } else {
