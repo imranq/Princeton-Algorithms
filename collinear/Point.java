@@ -15,8 +15,8 @@ import java.lang.Math;
 
 public class Point implements Comparable<Point> {
 
-    public final int x;     // x-coordinate of this point
-    public final int y;     // y-coordinate of this point
+    private final int x;     // x-coordinate of this point
+    private final int y;     // y-coordinate of this point
 
     /**
      * Initializes a new point.
@@ -44,10 +44,6 @@ public class Point implements Comparable<Point> {
      *
      * @param that the other point
      */
-    public int distance(){
-        return this.x^2+this.y^2;
-    }
-    
     
     public void drawTo(Point that) {
         /* DO NOT MODIFY */
@@ -71,11 +67,12 @@ public class Point implements Comparable<Point> {
             if (that.y - y > 0) {
                 return Double.POSITIVE_INFINITY;
             } else {
-                return Double.POSITIVE_INFINITY; //keep it the same since a vertical line is a vertical line
+                return Double.NEGATIVE_INFINITY; //keep it the same since a vertical line is a vertical line
             }
             
         } else {
-            return ((double)that.y-(double)y)/((double)that.x-(double)x);
+            Double slopeResult = ((double)this.y-(double)that.y)/((double)this.x-(double)that.x);
+            return slopeResult;
         }
         
         
@@ -93,10 +90,7 @@ public class Point implements Comparable<Point> {
      *         point; and a positive integer if this point is greater than the
      *         argument point
      */
-    public double distanceTo(Point that) {
-        return Math.sqrt(Math.pow(that.x-x,2) + Math.pow(that.y-y,2));
-    }
-    
+   
     public int compareTo(Point that) {
         /* YOUR CODE HERE */
         if (that.y > y) {
@@ -122,10 +116,18 @@ public class Point implements Comparable<Point> {
      * @return the Comparator that defines this ordering on points
      */
     public Comparator<Point> slopeOrder() {
-        final Point that = this;
         return new Comparator<Point>() {
+            @Override
             public int compare(Point o1, Point o2) {
-                return Double.compare(o1.slopeTo(that),o2.slopeTo(that));
+                double slopeDiff = slopeTo(o1) - slopeTo(o2);
+                
+                if (slopeDiff > 0) {
+                    return 1; //o1 greater slope wrt P
+                } else if (slopeDiff < 0) {
+                    return -1; //o1 less slope wrt P
+                } else {
+                    return 0; //o1 and o2 same slope wrt P
+                }
             }
         };
     }
@@ -148,8 +150,8 @@ public class Point implements Comparable<Point> {
      */
     public static void main(String[] args) {
         /* YOUR CODE HERE */
-        Point a = new Point(4160, 29184);
-        Point b = new Point(5120, 5678);
+        Point a = new Point(183, 156);
+        Point b = new Point(167, 156);
         StdOut.println(a.slopeTo(b));
         
     }
