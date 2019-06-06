@@ -10,7 +10,6 @@ public class FastCollinearPoints {
    private ArrayList<Double> slopeMapToIndex = new ArrayList<>();
    private ArrayList<ArrayList<Point>> indexToPointMap = new ArrayList<>();
    
-   
    public FastCollinearPoints(Point[] points)     // finds all line segments containing 4 or more points
    {
        //check null
