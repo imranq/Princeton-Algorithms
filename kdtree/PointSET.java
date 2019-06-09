@@ -68,6 +68,10 @@ public class PointSET {
 		// unit testing of the methods (optional) 
 		PointSET s = new PointSET();
 		s.insert(new Point2D(1,2));
+		s.insert(new Point2D(5,6));
+		s.insert(new Point2D(2.3,3.1));
+		s.insert(new Point2D(2.25,3.1));
 		StdOut.print(s.nearest(new Point2D(2,3)));
+		s.draw();
 	}                 
 }
