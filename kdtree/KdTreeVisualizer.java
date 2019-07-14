@@ -27,7 +27,9 @@ public class KdTreeVisualizer {
                 Point2D p = new Point2D(x, y);
                 if (rect.contains(p)) {
                     StdOut.printf("%8.6f %8.6f\n", x, y);
+                    
                     kdtree.insert(p);
+                    StdOut.print(kdtree.contains(p));
                     StdDraw.clear();
                     kdtree.draw();
                     StdDraw.show();
