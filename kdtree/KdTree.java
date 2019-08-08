@@ -70,7 +70,6 @@ public class KdTree {
 		//traverse through the partitions based on vertical or not
 		//keep track of the euclidean distances at each tree level (when one side is greater, ignore the other side)
 		return nearest(root, p, true, root.p);
-
 	}
 
 	public int size() {
@@ -111,7 +110,7 @@ public class KdTree {
 
 	public void insert(Point2D p) {
 		//use helper function to recursively insert a value
-		root = insert(root, p, true, 0, 0, 1, 1);
+		root = insert(root, p, true, 0, 0, 1, 1, 0);
 	}
 
 	public boolean contains(edu.princeton.cs.algs4.Point2D p) {
@@ -119,7 +118,7 @@ public class KdTree {
 		return contains(root, p, true);
 	}
 
-	private Node insert(Node node, Point2D p, boolean vertical, double x1, double y1, double x2, double y2) {
+	private Node insert(Node node, Point2D p, boolean vertical, double x1, double y1, double x2, double y2, int level) {
 		if (node == null) {
 			size++;
 			return new Node(p, new RectHV(x1, y1, x2, y2));
@@ -131,30 +130,43 @@ public class KdTree {
 		}
 
 		//go left based on x value
+		StdOut.println("");
+		for (int i = 0; i<level; i++) {
+			StdOut.print(" ");
+		}
+
 		double cmp = 0;
 		if (vertical) {
 			cmp = p.x() - node.p.x(); //go left if negative and right if positive
+			StdOut.print("Vertical");
 			if (cmp > 0) { //go to right
-				node.left = insert(node.left, p, !vertical, node.p.x(), y1, x2, y2);	
+				StdOut.print("- going to the right");
+				node.right = insert(node.right, p, !vertical, node.p.x(), y1, x2, y2, level+1);	
 			} else { //go to left
-				node.left = insert(node.left, p, !vertical, x1, y1, node.p.x(), y2);	
+				StdOut.print("- going to the left");
+				node.left = insert(node.left, p, !vertical, x1, y1, node.p.x(), y2, level+1);	
 			}
 			
 		} else {
+			StdOut.print("Horizontal");
 			cmp = p.y() - node.p.y();
 			if (cmp > 0) { //go up
-				node.right = insert(node.right, p, !vertical, x1, node.p.y(), x2, y2);	
+				StdOut.print("- going to the top");
+				node.right = insert(node.right, p, !vertical, x1, node.p.y(), x2, y2, level+1);	
 			} else { //go down
-				node.right = insert(node.right, p, !vertical, x1, y1, x2, node.p.y());	
+				StdOut.print("- going to the bottom");
+				node.left = insert(node.left, p, !vertical, x1, y1, x2, node.p.y(), level+1);	
 			}
 		}
-
+		StdOut.println("");
 		return node;
 	}
 
 	private boolean contains(Node node, Point2D p, boolean vertical) {
 		//go throiugh the left or right based on vertical
-		if (node.p.compareTo(p) == 0) {
+		if (node == null) {
+			return false;
+		} else if (node.p.compareTo(p) == 0) {
 			return true;
 		} else {
 			double cmp = 0;
@@ -169,7 +181,9 @@ public class KdTree {
 			} else {
 				return contains(node.left, p, !vertical);
 			}
+			// return false;
 		}
+
 	}
 
 	private Point2D nearest(Node node, Point2D p, boolean vertical, Point2D c) {
